@@ -1,0 +1,81 @@
+\section{Определение полигона}
+
+Пусть $\Gamma \subset \plain$ --- замкнутая ломаная без cамопересечений. $\Gamma = \{v_0 v_1 v_2 ... v_{n-1} v_n \},
+~v_i = v_{n + i}$.
+\begin{figure}[h]
+\includegraphics{gamma.eps}
+\end{figure}
+Определим функцию $isects(p, ray) \to \{0, 1\}$, $p \in \plain \setminus \Gamma$ возвращающую четность числа пересечений 
+луча $ray$ с началом в точке $p$ с $\Gamma$. При подсчете числа пересечений необходимо учитывать два особых случая: 
+\begin{itemize}
+    \item $ray \cup \{v_{i-1}v_{i}v_{i+1}\} = v_i$, 
+    \item $ray \cup \{v_{i-1}v_{i}...v_{j}v_{j+1}\} = \{v_{i}...v_{j}\}$. 
+\end{itemize}
+
+\begin{figure}[h]
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.9\linewidth]{isect-1-a.eps} \\ a}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.9\linewidth]{isect-1-b.eps} \\ b}
+\end{minipage}
+\caption{особый случай пересечения первого типа}
+\label{pic:isect_1}
+\end{figure}
+
+В случае (\ref{pic:isect_1}) будем считать, что если вершины $v_{i-1}$, $v_{i+1}$ лежат по одну сторону от луча $ray$~(a), 
+то пересечение в точке $v_i$ не засчитывается, а если по разные (b), то засчитывается ровно одно.
+
+\begin{figure}[h]
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.9\linewidth]{isect-2-a.eps} \\ a}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.9\linewidth]{isect-2-b.eps} \\ b}
+\end{minipage}
+\caption{особый случай пересечения второго типа}
+\label{pic:isect_2}
+\end{figure}
+
+Случай (\ref{pic:isect_2}) на самом деле не сильно отличается от случая (\ref{pic:isect_1}), если представить себе, что 
+цепь $\{v_iv_{i+1}...v_j\}$ схлопывается в одну точку. Соответственно, если вершины $v_{i-1}$, $v_{j+1}$ лежат по одну сторону 
+от луча $ray$~(a), то пересечение по цепи $\{v_iv_{i+1}...v_j\}$ не засчитывается, а если по разные (b), 
+то засчитывается ровно одно.
+
+\begin{statement}
+Функция $isect(p, ray)$ зависит только от $p$. 
+\begin{proof}
+Функция $isect(p, ray)$ непрерывна по аргументу $ray$ и принимает дискретные значения, значит она постоянна.
+\end{proof}
+\end{statement}
+
+\begin{definition} Задавшись замкнутой ломаной $\Gamma$, определим полигон $P$ следующим образом. \\
+$$int(P) \eqdef \{ p \; | \; isect(p) = 1 \},$$
+$$ext(P) \eqdef \{ p \; | \; isect(p) = 0 \},$$
+$$P \eqdef int(P) \cup \Gamma.$$
+\end{definition}
+
+Интуитивно понятные термины границы, внутренности, связности полигона совпадают с тем, как они определяются в топологии.
+
+\begin{statement}
+$\Gamma$ --- граница $P$.
+\end{statement}
+\begin{statement}
+$int(P)$ --- внутренность $P$.
+\end{statement}
+\begin{statement}
+$int(P)$, $ext(P)$ --- связны. $int(P) \cup ext(P) = \plain \setminus \Gamma$ --- несвязно.
+\end{statement}
+
+Зачем нужно столь формализованное опеределение полигона? Одно из применений --- алгоритм определения принадлежности точки 
+полигону, для которого обоснование корректности тривиально. Соответсвует ли полигон, определенный таким образом, 
+тем свойствам, которые ожидаются? Давайте покажем парочку.
+
+\begin{statement}
+Выпуклый полигон (в смысле пересечение конечного числа полуплоскостей) --- полигон в определенном выше смысле.
+\end{statement}
+\begin{statement}
+Если вершины границы полигона конечны, то полигон ограничен.    
+\end{statement}
