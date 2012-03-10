@@ -13,10 +13,13 @@ for (pair v : vertices)
     dot(v);
 
 label("$v_0$", vertices[0], SW);
+label("$e_0$", (vertices[0] + vertices[1]) / 2, N);
 label("$v_1$", vertices[1], S);
+label("$e_1$", (vertices[1] + vertices[2]) / 2, E);
 label("$v_2$", vertices[2], W);
 label("$v_{n-2}$", vertices[vertices.length - 3], E);
 label("$v_{n-1}$", vertices[vertices.length - 2], SE);
+label("$e_{n-1}$", (vertices[0] + vertices[vertices.length - 2]) / 2, E);
 
 pair p = (4,5);
 dot(p);

@@ -29,6 +29,13 @@
 \newcommand{\plain}{\mathbb{R}^2}
 \newcommand{\eqdef}{\stackrel{\mathrm{def}}{=}}
 
+\makeatletter
+\newcommand{\labitem}[2]{
+\def\@itemlabel{\textbf{#1}}
+\item
+\def\@currentlabel{#1}\label{#2}}
+\makeatother
+
 \pagestyle{empty}
 
 \begin{document}
