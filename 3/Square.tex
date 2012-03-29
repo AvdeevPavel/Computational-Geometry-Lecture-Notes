@@ -1,0 +1,107 @@
+\section{Вычисление площади полигона}
+
+\subsection{Площадь треугольника} 
+Для поиска площади треугольника возьмем четвертую точку P(см. рис 1).
+\begin{figure}[h]
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.6\linewidth]{triangle-and-point-1.eps} \\ a}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.6\linewidth]{triangle-and-point-2.eps} \\ b}
+\end{minipage}
+\caption{Случаи расположения точки относительно треугольника}
+\label{pic:isect_1}
+\end{figure}
+
+Будем обозначать ориентированную площадь - A. Тогда исходя из рисунков очевидна такая формула: 
+$$
+2*A_{ABC} = A_{PAB} + A_{PBC} + A_{PCA}
+$$
+Поясним что в ситуации на рис 1.a $A_{PAB}$ будет отрицательна. А в ситуации на рис 2.б $A_{PAB}$ будет положительна.
+Распишем одно из слагаемых в виде векторного произведения:
+$$
+A_{PAB} = [(P - A) \times (P - B)]  = [A \times B] + [P \times (A - B)]
+$$
+Тогда, расписав каждое слагаемое подобным образом, получаем:
+$$
+2A_{ABC} = [A \times B] + [B \times C] + [C \times A] = \begin{vmatrix} a_{x} & a_{y} & 1 \\ b_{x} & b_{y} & 1 \\ c_{x} & c_{y} & 1 \\\end{vmatrix}
+$$
+
+\subsection{Площадь четырехугольника} 
+Площадь произвольного четырехугольника будем считать с помощью разбиения на треугольники. Рассмотрим несколько ситуаций: 
+
+\begin{figure}[h]
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.6\linewidth]{fourangle-1.eps} \\ a}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.49\linewidth}
+\center{\includegraphics[width=0.6\linewidth]{fourangle-2.eps} \\ b}
+\end{minipage}
+\caption{Четырехугольники}
+\label{pic:isect_1}
+\end{figure}
+
+Если посчитать площадь четырехугольника как сумму площадей треугольников $A_{ABC} + A_{ACD}$ то, расписав эти слагаемые через векторные произведения, получим что: $$2A_{ABCD} = [A \times B] + [B \times C] + [C \times D] + [D \times A]$$
+Слагаемые $[A \times C] + [C \times A]$ сократились.\\
+
+Очевидно, что если мы будем считать площадь четырехугольника, приведенного на рис.2б, через сумму $A_{ACD} + A_{ACB}$, получим такую же формулу, изложенную выше. Заметим, что если разложить площадь четырехугольника через $A_{CDB} + A_{ADB}$, слагаемые относительно DB уйдут и получим тоже формулу. 
+
+\subsection{Площадь полигона}
+\begin{figure}[h]
+\center{\includegraphics{poly-with-ear1.eps}}
+\caption{Выпуклый четырехугольник}
+\end{figure}
+
+\begin{theorem}
+Пусть дан полигон $[v_0, v_1, \ldots, v_{n-1}]$, тогда площадь можно найти: 
+$$
+2A_{Poly} = [v_{0} \times v_{1}] + [v_{1} \times v_{2}] + \cdots + [v_{n-1} \times v_{0}]
+$$
+\begin{proof}
+\uline {База:} Для треугольника доказали выше. \\
+\uline {Индукционный переход:} У любого полигона есть ухо(см. рис 3). Тогда площадь:
+$$
+2A_{Poly_{n-1}} = A_{Poly_{n-2}} + A_{Pv_{n-2}v_{n-1}} + A_{Pv_{n-1}v_0} + A_{Pv_0v_{n-2}}
+$$
+По индукционному предположению 
+$$
+2A_{Poly_{n-2}} = A_{Pv_0v_1} + A_{Pv_1v_2} + \cdots + A_{Pv_{n-2}v_0}
+$$
+Заметим что $A_{Pv_0v_{n-2}} + A_{Pv_{n-2}v_0} = 0$, тогда в результате получаем
+$$
+2A_{Poly_{n-1}} = A_{Pv_0v_1} + A_{Pv_1v_2} + \cdots + A_{Pv_{n-1}v_0}
+$$
+\end{proof}
+\end{theorem} 
+
+\begin{corollary}
+Уравнение площади через координаты: 
+$$
+2A_{Poly} = \sum_{i=0}^{n-1}x_iy_{i+1}-x_{i+1}y_i = \sum_{i=0}^{n-1}(x_i - x_{i+1})(y_i + y_{i+1})
+$$
+\end{corollary}
+
+\subsection{Метод Монте-Карло}
+
+\begin{figure}[h]
+\center{\includegraphics{monte-carlo.eps}}
+\caption{фигура, вписанная в простую фигуру}
+\end{figure}
+
+Суть метода заключается в том, что исходную фигуру вписываем в простую фигуру, площадь которой можем посчитать. В рис.4 $S_{out}$ - площадь прямоугольника. А дальше бросаем в простую фигуру N точек($N \rightarrow \inf$), определяя, куда попала каждая точка. В итоге получаем соотношение: 
+$$
+\frac{k}{N} = \frac{S_{in}}{S_{out}}
+$$
+где k - количество точек, которые попали в нашу исходную фигуру, $S_{in}$ - искомая площадь.
+
+\begin{figure}[h]
+\center{\includegraphics{calc-pi.eps}}
+\caption{Окружность, вписанная в квадрат}
+\end{figure}
+Так же с помощью метода Монте-Карло можно посчитать приближенное значение $\pi$. Опишем возле окружности квадрат(см. рис.5) и будем бросать в него точки. Воспользовавшись соотношением, изложенным ранее, получаем:   
+$$
+\frac{k}{N} = \frac{S_{in}}{S_{out}} = \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}
+$$
+
